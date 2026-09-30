@@ -60,15 +60,15 @@ export const en = {
   "promo.none": "No promotions are running right now. Check back soon.",
   "promo.loyaltyTitle": "Our Loyalty Programme",
   "promo.loyaltyText":
-    "Every time you buy three of the same item, your fourth one is free. Just mention it when you order — we keep count with you at the counter.",
+    "TO BE FILLED",
 
   "about.title": "About Us",
   "about.storyTitle": "Our Story",
   "about.story":
-    "T&M Lunch started as a small takeaway with one simple promise: good food should lift your day. From fat cakes in the morning to a loaded kota at lunch, we cook everything fresh, serve it fast and keep our prices fair for the people who feed our business.",
+    "TO BE FILLED",
   "about.missionTitle": "Our Mission",
   "about.mission":
-    "To serve honest, tasty, affordable food that leaves every customer in a great mood — whether they eat in with us or take it away.",
+    "TO BE FILLED",
   "about.valuesTitle": "Our Values",
 
   "buy.title": "Your Buy List",
@@ -139,6 +139,23 @@ export const en = {
   "admin.active": "Active",
   "admin.price": "Price",
   "admin.noOrders": "No orders yet.",
+
+  "home.viewAll": "View full menu",
+  "checkout.details": "Your details",
+  "checkout.placing": "Placing your order…",
+  "checkout.error": "Something went wrong placing your order. Please try again.",
+  "checkout.manualTitle": "Your order is placed!",
+  "checkout.sendTo": "To finish, send the total to",
+  "checkout.useReference": "Use this reference",
+  "checkout.manualNote": "The shop confirms your order once the payment arrives. Show your order number at the counter.",
+  "checkout.simulatedNote": "Demo mode: no real money was moved.",
+  "feedback.error": "We could not send your feedback. Please try again.",
+  "feedback.nameRequired": "Please add your name.",
+  "admin.orderStatus": "Payment status",
+  "admin.markPaid": "Mark paid",
+  "admin.markFailed": "Mark failed",
+  "admin.signInHelp": "Staff only.",
+  "admin.loading": "Checking access…",
 } as const;
 
 export type TranslationKey = keyof typeof en;

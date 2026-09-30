@@ -31,6 +31,10 @@ export const siteConfig = {
 
   // Mobile money merchant numbers — placeholders
   payments: {
+    // "manual": order is saved, customer is told to send money and the shop confirms (Phase 1, honest default)
+    // "simulated": demo-only fake gateway, never use for real customers
+    // "live": real gateway via server function (Phase 2)
+    mode: "manual" as "manual" | "simulated" | "live",
     mpesaMerchantNumber: "XXXXXX",
     ecocashMerchantNumber: "XXXXXX",
   },

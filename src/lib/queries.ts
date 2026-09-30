@@ -35,3 +35,19 @@ export const promotionsQuery = queryOptions({
     return (data ?? []) as unknown as PromotionRow[];
   },
 });
+
+export type SiteSettingRow = { key: string; value: string };
+
+export const siteSettingsQuery = queryOptions({
+  queryKey: ["site-settings"],
+  queryFn: async (): Promise<SiteSettingRow[]> => {
+    const { data, error } = await supabase.from("site_settings").select("*");
+    if (error) throw error;
+    return (data ?? []) as SiteSettingRow[];
+  },
+});
+
+export const getSettingValue = (settings: SiteSettingRow[] | undefined, key: string, fallback = ""): string => {
+  const found = (settings ?? []).find((s) => s.key === key);
+  return found?.value ?? fallback;
+};

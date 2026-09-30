@@ -16,6 +16,7 @@ export type ProductRow = {
   category: string;
   available: boolean;
   featured: boolean;
+  is_special?: boolean;
   sort_order: number;
 };
 

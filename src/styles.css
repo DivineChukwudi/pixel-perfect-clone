@@ -1,8 +1,9 @@
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @source "../src";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light *));
 
 /*
  * T&M Lunch design system — premium dark: gold on black.
@@ -75,6 +76,34 @@
   --charcoal: oklch(0.19 0 0);
 }
 
+:root.light {
+  --background: oklch(0.985 0.004 85);
+  --foreground: oklch(0.22 0.018 65);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.018 65);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.018 65);
+  --primary: oklch(0.56 0.14 52);
+  --primary-foreground: oklch(0.995 0.004 90);
+  --secondary: oklch(0.94 0.008 85);
+  --secondary-foreground: oklch(0.26 0.018 65);
+  --muted: oklch(0.955 0.006 85);
+  --muted-foreground: oklch(0.52 0.012 70);
+  --accent: oklch(0.97 0.022 80);
+  --accent-foreground: oklch(0.32 0.04 60);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.995 0.004 90);
+  --success: oklch(0.58 0.16 150);
+  --border: oklch(0.88 0.012 78);
+  --input: oklch(0.91 0.014 75);
+  --ring: oklch(0.56 0.14 52);
+  --gold: oklch(0.56 0.14 52);
+  --gold-soft: oklch(0.56 0.14 52 / 0.25);
+  --gold-glow: oklch(0.62 0.15 52 / 0.28);
+  --cream: oklch(0.99 0.006 90);
+  --charcoal: oklch(0.965 0.008 85);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -99,7 +128,12 @@
 
 @utility gold-frame {
   border: 1px solid var(--gold-soft);
-  background: linear-gradient(160deg, var(--charcoal), oklch(0.12 0 0));
+  background:
+    linear-gradient(160deg, var(--charcoal), var(--background)),
+    var(--card);
+  box-shadow:
+    0 1px 2px oklch(0.2 0.02 65 / 0.06),
+    0 12px 30px -22px oklch(0.3 0.05 60 / 0.25);
   transition:
     box-shadow 0.35s ease,
     transform 0.35s ease,
@@ -107,14 +141,24 @@
 
   &:hover {
     border-color: var(--gold);
-    box-shadow: var(--shadow-glow);
+    box-shadow:
+      0 1px 2px oklch(0.2 0.02 65 / 0.08),
+      0 18px 44px -20px var(--gold-glow);
     transform: translateY(-3px);
   }
 }
 
 @utility gold-text-gradient {
-  background: linear-gradient(100deg, oklch(0.86 0.1 92), var(--gold), oklch(0.68 0.12 78));
+  background: linear-gradient(100deg, var(--gold), oklch(0.6 0.14 48), var(--gold));
   background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility gold-text-gradient-light {
+  background: linear-gradient(100deg, oklch(0.46 0.14 48), oklch(0.56 0.14 52), oklch(0.5 0.13 50));
+  background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
 }
 

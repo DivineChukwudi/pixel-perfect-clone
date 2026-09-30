@@ -3,6 +3,7 @@ import { Menu, Search, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
 import { Logo } from "./Logo";
 import { LanguageToggle } from "./LanguageToggle";
+import { ThemeToggle } from "./ThemeToggle";
 import { useI18n } from "@/i18n";
 import { useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
@@ -28,7 +29,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-black/85 backdrop-blur-lg">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-lg">
       <div className="section-shell grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-3">
         <Link to="/" className="min-w-0">
           <Logo />
@@ -64,6 +65,7 @@ export function Header() {
           </form>
 
           <LanguageToggle />
+          <ThemeToggle />
 
           <Link
             to="/buy-list"
@@ -91,7 +93,7 @@ export function Header() {
       </div>
 
       {open && (
-        <div className="border-t border-border bg-black/95 lg:hidden">
+        <div className="border-t border-border bg-background/95 lg:hidden">
           <div className="section-shell flex flex-col gap-1 py-3">
             {navItems.map((item) => (
               <Link

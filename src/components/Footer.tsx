@@ -15,7 +15,7 @@ export function Footer() {
   const { t, lang } = useI18n();
 
   return (
-    <footer className="mt-20 border-t border-border bg-[var(--charcoal)]/60">
+    <footer className="mt-20 border-t border-border bg-[oklch(0.96_0.01_80)] dark:bg-[var(--charcoal)]/60">
       <div className="section-shell grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-4">
           <Logo />

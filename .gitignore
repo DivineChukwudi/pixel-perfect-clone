@@ -1,4 +1,20 @@
-# Logs
+# ---- Dependencies ----
+node_modules
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# ---- Build output ----
+dist
+dist-ssr
+.output
+.vinxi
+.tanstack/**
+.nitro
+build/
+out/
+
+# ---- Logs ----
 logs
 *.log
 npm-debug.log*
@@ -7,26 +23,64 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-.output
-.vinxi
-.tanstack/**
-.nitro
+# ---- Env / secrets (never commit) ----
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.staging
+secrets
+*.pem
+*.key
+
+# ---- Supabase local dev (generated / stateful) ----
+supabase/.branches
+supabase/.temp
+supabase/.branches/*
+supabase/.temp/*
+supabase/seed.sql
+supabase/config.toml.local
+# Note: keep supabase/config.toml (project settings) and supabase/migrations (schema history)
+
+# ---- Drizzle local DB state (SQLite local, cache) ----
+*.sqlite
+*.sqlite-journal
+*.db
+drizzle/meta/_journal*.local
+
+# ---- Bun / package managers ----
+bun.lockb
 *.local
 
-# Wrangler / Cloudflare
+# ---- Wrangler / Cloudflare ----
 .wrangler/
 .dev.vars
 
-# Editor directories and files
+# ---- Caches ----
+.cache
+.parcel-cache
+.eslintcache
+.stylelintcache
+.turbo
+.next/cache/**
+.prettiercache
+
+# ---- Editor / OS ----
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# ---- TypeScript buildinfo ----
+*.tsbuildinfo
+
+# ---- Coverage ----
+coverage
+.nyc_output

@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useLocation,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -13,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { I18nProvider } from "@/i18n";
 import { CartProvider } from "@/lib/cart";
+import { ThemeProvider } from "@/hooks/use-theme";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
@@ -130,23 +132,27 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
 
   return (
     <QueryClientProvider client={queryClient}>
-      <I18nProvider>
-        <CartProvider>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">
-              {/* Required: nested routes render here. */}
-              <Outlet />
-            </main>
-            <Footer />
-          </div>
-          <WhatsAppButton />
-          <Toaster />
-        </CartProvider>
-      </I18nProvider>
+      <ThemeProvider>
+        <I18nProvider>
+          <CartProvider>
+            <div className="flex min-h-screen flex-col">
+              {!isAdmin && <Header />}
+              <main className="flex-1">
+                {/* Required: nested routes render here. */}
+                <Outlet />
+              </main>
+              {!isAdmin && <Footer />}
+            </div>
+            {!isAdmin && <WhatsAppButton />}
+            <Toaster />
+          </CartProvider>
+        </I18nProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
