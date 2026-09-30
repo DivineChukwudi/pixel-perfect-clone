@@ -55,10 +55,9 @@ export const paymentService = {
     const record = simulated.get(reference);
     if (!record) return { reference, status: "failed", message: "Unknown payment reference." };
     if (Date.now() < record.resolveAt) return { reference, status: "pending" };
-    return {
-      reference,
-      status: record.status,
-      message: record.status === "failed" ? "The payment was declined or timed out." : undefined,
-    };
+    if (record.status === "failed") {
+      return { reference, status: "failed", message: "The payment was declined or timed out." };
+    }
+    return { reference, status: "success" };
   },
 };
