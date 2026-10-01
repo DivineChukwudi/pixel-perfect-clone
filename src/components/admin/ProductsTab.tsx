@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { ImageField } from "./ImageField";
 import { adminDb } from "@/lib/adminDb";
 import { CATEGORIES } from "@/lib/products";
+import { Plus, Trash2 } from "lucide-react";
 
 type Product = {
   id: string;
@@ -66,7 +67,7 @@ export function ProductsTab() {
           Available, Featured and Today's Special save instantly. Other edits need Save.
         </p>
         <Button variant="gold" size="sm" className="rounded-full" onClick={() => void add()}>
-          + Add item
+          <Plus /> Add item
         </Button>
       </div>
       {isLoading && <p className="text-muted-foreground">Loading…</p>}
@@ -164,13 +165,15 @@ function ProductEditor({
           checked={draft.is_special}
           onChange={(v) => void quick({ is_special: v }, v && hasOtherSpecial)}
         />
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="sm"
           onClick={() => void remove()}
-          className="ml-auto cursor-pointer text-xs text-muted-foreground hover:text-destructive"
+          className="ml-auto text-muted-foreground hover:text-destructive"
         >
-          Delete
-        </button>
+          <Trash2 /> Delete
+        </Button>
       </div>
 
       <div className="grid gap-3 md:grid-cols-2">

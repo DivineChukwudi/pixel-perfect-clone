@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { adminDb } from "@/lib/adminDb";
 import { formatMaloti } from "@/config/siteConfig";
+import { RefreshCw } from "lucide-react";
 
 type OrderItem = { id: string; product_name: string; unit_price: number; quantity: number };
 type Order = {
@@ -73,24 +74,25 @@ export function OrdersTab() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
           {FILTERS.map((f) => (
-            <button
+            <Button
               key={f.key}
               type="button"
+              variant={filter === f.key ? "gold" : "goldOutline"}
+              size="sm"
               onClick={() => setFilter(f.key)}
-              className={`cursor-pointer rounded-full border px-4 py-1.5 text-sm ${
-                filter === f.key
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-[var(--gold-soft)] text-muted-foreground hover:text-primary"
-              }`}
+              className="rounded-full"
             >
               {f.label}
-            </button>
+            </Button>
           ))}
         </div>
         <Button variant="goldOutline" size="sm" className="rounded-full" onClick={() => void refetch()}>
-          {isFetching ? "Refreshing…" : "Refresh"} (auto every 15s)
+          <RefreshCw className={isFetching ? "animate-spin" : ""} />
+          {isFetching ? "Refreshing…" : "Refresh"}
         </Button>
       </div>
+
+      <p className="text-xs text-muted-foreground">Orders refresh automatically every 15 seconds.</p>
 
       {isLoading && <p className="text-muted-foreground">Loading orders…</p>}
       {error && <p className="text-destructive">{(error as Error).message}</p>}
