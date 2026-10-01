@@ -157,4 +157,12 @@ export const so: Record<TranslationKey, string> = {
   "admin.markFailed": "Tšoaea e Hlōlehile",
   "admin.signInHelp": "Bafani ba tšebeletso feela.",
   "admin.loading": "Re hlahloba tumello…",
+  "buy.deliveryUnavailable": "Ho isoa lapeng ho emisitsoe ka nakoana. Ho nka lijo le ho ja mona li bulehile.",
+  "buy.deliveryAddress": "Aterese ea ho isoa",
+  "buy.deliveryAddressHint": "Seterata, sebaka le letšoao le haufi le uena",
+  "buy.deliveryAreas": "Re isa ho",
+  "buy.deliveryFee": "Tefo ea ho isa",
+  "buy.deliveryMin": "Odara e nyane ka ho fetisisa bakeng sa ho isa",
+  "buy.missingAddress": "Ka kopo kenya aterese ea hau ea ho isoa.",
+  "checkout.deliveryNote": "Re tla letsetsa nomoro eo u re file eona ho netefatsa ho isoa ha hau.",
 };

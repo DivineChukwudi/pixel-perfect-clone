@@ -12,6 +12,8 @@ type Order = {
   customer_name: string;
   phone: string;
   order_type: string;
+  delivery_address: string | null;
+  delivery_fee: number | null;
   total: number;
   payment_method: string | null;
   payment_status: string;
@@ -103,7 +105,7 @@ export function OrdersTab() {
             </span>
           </div>
           <p className="text-sm text-muted-foreground">
-            {new Date(o.created_at).toLocaleString("en-ZA")} · {o.order_type === "eat_in" ? "Eat-in" : "Takeaway"} ·{" "}
+            {new Date(o.created_at).toLocaleString("en-ZA")} · {o.order_type === "eat_in" ? "Eat-in" : o.order_type === "delivery" ? "DELIVERY" : "Takeaway"} ·{" "}
             {o.payment_method ?? "n/a"}
           </p>
           <p className="text-sm">
@@ -112,6 +114,12 @@ export function OrdersTab() {
               {o.phone}
             </a>
           </p>
+          {o.order_type === "delivery" && (
+            <p className="rounded-xl border border-primary/40 bg-primary/5 px-3 py-2 text-sm">
+              <span className="font-semibold text-primary">Deliver to:</span> {o.delivery_address}
+              {Number(o.delivery_fee) > 0 && <span className="text-muted-foreground"> (fee {formatMaloti(Number(o.delivery_fee))} included in total)</span>}
+            </p>
+          )}
           <ul className="text-sm text-muted-foreground">
             {o.order_items.map((i) => (
               <li key={i.id}>

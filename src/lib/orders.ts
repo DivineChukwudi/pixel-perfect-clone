@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export type OrderType = "takeaway" | "eat_in";
+export type OrderType = "takeaway" | "eat_in" | "delivery";
 export type PaymentMethodDb = "mpesa" | "ecocash" | "manual";
 
 export type CreateOrderInput = {
@@ -8,10 +8,11 @@ export type CreateOrderInput = {
   phone: string;
   orderType: OrderType;
   paymentMethod: PaymentMethodDb;
+  deliveryAddress?: string;
   items: { productId: string; quantity: number }[];
 };
 
-export type CreatedOrder = { order_number: string; total: number };
+export type CreatedOrder = { order_number: string; total: number; subtotal?: number; delivery_fee?: number };
 
 type RpcClient = {
   rpc: (
@@ -32,6 +33,7 @@ export async function createOrder(input: CreateOrderInput): Promise<CreatedOrder
     _order_type: input.orderType,
     _payment_method: input.paymentMethod,
     _items: input.items.map((i) => ({ product_id: i.productId, quantity: i.quantity })),
+    _delivery_address: input.deliveryAddress ?? null,
   });
   if (error) throw new Error(error.message);
   return data as CreatedOrder;

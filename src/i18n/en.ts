@@ -156,6 +156,15 @@ export const en = {
   "admin.markFailed": "Mark failed",
   "admin.signInHelp": "Staff only.",
   "admin.loading": "Checking access…",
+
+  "buy.deliveryUnavailable": "Delivery is temporarily unavailable. Pickup and eat-in are open.",
+  "buy.deliveryAddress": "Delivery address",
+  "buy.deliveryAddressHint": "Street, area and a landmark near you",
+  "buy.deliveryAreas": "We deliver to",
+  "buy.deliveryFee": "Delivery fee",
+  "buy.deliveryMin": "Minimum order for delivery",
+  "buy.missingAddress": "Please enter your delivery address.",
+  "checkout.deliveryNote": "We will call the number you gave to confirm your delivery.",
 } as const;
 
 export type TranslationKey = keyof typeof en;

@@ -8,6 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { siteSettingsQuery, getSettingValue } from "@/lib/queries";
 import { toVideoSource } from "@/lib/video";
 import { isPlaceholder } from "@/config/siteConfig";
+import { DeliverySettings } from "@/components/admin/DeliverySettings";
+import { PaymentSettings } from "@/components/admin/PaymentSettings";
 
 const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100 MB
 
@@ -89,11 +91,14 @@ export function SettingsTab() {
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm text-muted-foreground">
-        Upload a video file from your device, or paste a YouTube / Facebook / direct video link.
+        Delivery switch, payment numbers and the promotional video. Upload a video from your device, or paste a YouTube / Facebook / direct video link.
       </p>
 
       {isLoading && <p className="text-muted-foreground">Loading…</p>}
       {error && <p className="text-destructive">{(error as Error).message}</p>}
+
+      <DeliverySettings />
+      <PaymentSettings />
 
       <article className="gold-frame flex flex-col gap-5 rounded-2xl p-5">
         <h3 className="text-lg font-semibold">Promotional Video</h3>

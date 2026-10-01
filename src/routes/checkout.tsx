@@ -9,6 +9,10 @@ import { loadCustomer, saveCustomer, type CustomerDetails } from "@/lib/customer
 import { createOrder, type CreatedOrder } from "@/lib/orders";
 import { paymentService, type PaymentMethod } from "@/lib/paymentService";
 import { formatMaloti, isPlaceholder, siteConfig } from "@/config/siteConfig";
+import { useQuery } from "@tanstack/react-query";
+import { OrderTypePicker } from "@/components/OrderTypePicker";
+import { useDelivery } from "@/lib/delivery";
+import { getSettingValue, siteSettingsQuery } from "@/lib/queries";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — T&M Lunch" }] }),
@@ -20,7 +24,7 @@ type Stage = "form" | "placing" | "waiting" | "success" | "failed" | "manual";
 function CheckoutPage() {
   const { t, lang } = useI18n();
   const { items, total, clear } = useCart();
-  const [customer, setCustomer] = useState<CustomerDetails>({ name: "", phone: "", orderType: "takeaway" });
+  const [customer, setCustomer] = useState<CustomerDetails>({ name: "", phone: "", orderType: "takeaway", address: "" });
   const [method, setMethod] = useState<PaymentMethod>("mpesa");
   const [momoNumber, setMomoNumber] = useState("");
   const [stage, setStage] = useState<Stage>("form");
@@ -39,16 +43,36 @@ function CheckoutPage() {
   }, []);
 
   const mode = siteConfig.payments.mode;
+  const settings = useQuery(siteSettingsQuery);
+  const delivery = useDelivery();
   const merchant =
     method === "mpesa"
-      ? siteConfig.payments.mpesaMerchantNumber
-      : siteConfig.payments.ecocashMerchantNumber;
+      ? getSettingValue(settings.data, "mpesa_merchant_number", siteConfig.payments.mpesaMerchantNumber)
+      : getSettingValue(settings.data, "ecocash_merchant_number", siteConfig.payments.ecocashMerchantNumber);
+  const fee = customer.orderType === "delivery" ? delivery.fee : 0;
+
+  // If the shop switches delivery off, never leave a customer stuck on it.
+  useEffect(() => {
+    if (delivery.loaded && !delivery.available && customer.orderType === "delivery") {
+      setCustomer((c) => ({ ...c, orderType: "takeaway" }));
+    }
+  }, [delivery.loaded, delivery.available, customer.orderType]);
 
   const submit = async () => {
     setError("");
     if (customer.name.trim().length < 2 || customer.phone.replace(/\D/g, "").length < 8) {
       setError(t("buy.missingDetails"));
       return;
+    }
+    if (customer.orderType === "delivery") {
+      if (customer.address.trim().length < 5) {
+        setError(t("buy.missingAddress"));
+        return;
+      }
+      if (delivery.minOrder > 0 && total < delivery.minOrder) {
+        setError(`${t("buy.deliveryMin")}: ${formatMaloti(delivery.minOrder)}`);
+        return;
+      }
     }
     if (momoNumber.replace(/\D/g, "").length < 8) {
       setError(t("checkout.number"));
@@ -62,6 +86,7 @@ function CheckoutPage() {
         phone: customer.phone,
         orderType: customer.orderType,
         paymentMethod: mode === "manual" ? "manual" : method,
+        ...(customer.orderType === "delivery" ? { deliveryAddress: customer.address.trim() } : {}),
         items: items.map((i) => ({ productId: i.productId, quantity: i.quantity })),
       });
       setOrder(created);
@@ -205,22 +230,13 @@ function CheckoutPage() {
               onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
             />
           </label>
-          <div className="grid grid-cols-2 gap-2">
-            {(["takeaway", "eat_in"] as const).map((type) => (
-              <button
-                key={type}
-                type="button"
-                onClick={() => setCustomer({ ...customer, orderType: type })}
-                className={`cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors ${
-                  customer.orderType === type
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-[var(--gold-soft)] text-muted-foreground hover:text-primary"
-                }`}
-              >
-                {type === "takeaway" ? t("buy.takeaway") : t("buy.eatin")}
-              </button>
-            ))}
-          </div>
+          <OrderTypePicker
+            value={customer.orderType}
+            onChange={(orderType) => setCustomer({ ...customer, orderType })}
+            address={customer.address}
+            onAddressChange={(address) => setCustomer({ ...customer, address })}
+            delivery={delivery}
+          />
         </section>
 
         <section className="gold-frame flex flex-col gap-4 rounded-3xl p-6">
@@ -267,9 +283,15 @@ function CheckoutPage() {
             </li>
           ))}
         </ul>
+        {fee > 0 && (
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <span>{t("buy.deliveryFee")}</span>
+            <span>{formatMaloti(fee)}</span>
+          </div>
+        )}
         <div className="flex items-center justify-between border-t border-border pt-4">
           <span className="text-muted-foreground">{t("common.total")}</span>
-          <span className="font-display text-2xl text-primary">{formatMaloti(total)}</span>
+          <span className="font-display text-2xl text-primary">{formatMaloti(total + fee)}</span>
         </div>
         <Button variant="gold" size="lg" onClick={submit}>
           {t("checkout.confirm")}

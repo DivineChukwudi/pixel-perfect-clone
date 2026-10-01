@@ -9,6 +9,8 @@ import { useCart } from "@/lib/cart";
 import { loadCustomer, saveCustomer } from "@/lib/customer";
 import type { OrderType } from "@/lib/orders";
 import { formatMaloti } from "@/config/siteConfig";
+import { OrderTypePicker } from "@/components/OrderTypePicker";
+import { useDelivery } from "@/lib/delivery";
 
 export const Route = createFileRoute("/buy-list")({
   head: () => ({ meta: [{ title: "Buy List — T&M Lunch" }] }),
@@ -22,13 +24,23 @@ function BuyListPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [orderType, setOrderType] = useState<OrderType>("takeaway");
+  const [address, setAddress] = useState("");
+  const delivery = useDelivery();
 
   useEffect(() => {
     const saved = loadCustomer();
     setName(saved.name);
     setPhone(saved.phone);
     setOrderType(saved.orderType);
+    setAddress(saved.address);
   }, []);
+
+  // If the shop switches delivery off, never leave a customer stuck on it.
+  useEffect(() => {
+    if (delivery.loaded && !delivery.available && orderType === "delivery") setOrderType("takeaway");
+  }, [delivery.loaded, delivery.available, orderType]);
+
+  const fee = orderType === "delivery" ? delivery.fee : 0;
 
   if (items.length === 0) {
     return (
@@ -47,7 +59,17 @@ function BuyListPage() {
       toast.error(t("buy.missingDetails"));
       return;
     }
-    saveCustomer({ name: name.trim(), phone: phone.trim(), orderType });
+    if (orderType === "delivery") {
+      if (address.trim().length < 5) {
+        toast.error(t("buy.missingAddress"));
+        return;
+      }
+      if (delivery.minOrder > 0 && total < delivery.minOrder) {
+        toast.error(`${t("buy.deliveryMin")}: ${formatMaloti(delivery.minOrder)}`);
+        return;
+      }
+    }
+    saveCustomer({ name: name.trim(), phone: phone.trim(), orderType, address: address.trim() });
     navigate({ to: "/checkout" });
   };
 
@@ -102,25 +124,13 @@ function BuyListPage() {
       </div>
 
       <aside className="gold-frame flex h-fit flex-col gap-5 rounded-3xl p-6 lg:sticky lg:top-24">
-        <div>
-          <p className="mb-2 text-sm font-semibold">{t("buy.orderType")}</p>
-          <div className="grid grid-cols-2 gap-2">
-            {(["takeaway", "eat_in"] as const).map((type) => (
-              <button
-                key={type}
-                type="button"
-                onClick={() => setOrderType(type)}
-                className={`cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors ${
-                  orderType === type
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-[var(--gold-soft)] text-muted-foreground hover:text-primary"
-                }`}
-              >
-                {type === "takeaway" ? t("buy.takeaway") : t("buy.eatin")}
-              </button>
-            ))}
-          </div>
-        </div>
+        <OrderTypePicker
+          value={orderType}
+          onChange={setOrderType}
+          address={address}
+          onAddressChange={setAddress}
+          delivery={delivery}
+        />
         <label className="flex flex-col gap-1.5 text-sm">
           {t("buy.name")}
           <Input value={name} maxLength={80} onChange={(e) => setName(e.target.value)} />
@@ -135,9 +145,15 @@ function BuyListPage() {
             onChange={(e) => setPhone(e.target.value)}
           />
         </label>
+        {fee > 0 && (
+          <div className="flex items-center justify-between border-t border-border pt-4 text-sm text-muted-foreground">
+            <span>{t("buy.deliveryFee")}</span>
+            <span>{formatMaloti(fee)}</span>
+          </div>
+        )}
         <div className="flex items-center justify-between border-t border-border pt-4">
           <span className="text-muted-foreground">{t("common.total")}</span>
-          <span className="font-display text-2xl text-primary">{formatMaloti(total)}</span>
+          <span className="font-display text-2xl text-primary">{formatMaloti(total + fee)}</span>
         </div>
         <Button variant="gold" size="lg" onClick={payNow}>
           {t("buy.payNow")}

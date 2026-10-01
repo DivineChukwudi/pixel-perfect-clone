@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { adminDb as looseDb } from "@/lib/adminDb";
 import type { ProductRow } from "@/lib/products";
 
 export type PromotionRow = {
@@ -41,7 +42,8 @@ export type SiteSettingRow = { key: string; value: string };
 export const siteSettingsQuery = queryOptions({
   queryKey: ["site-settings"],
   queryFn: async (): Promise<SiteSettingRow[]> => {
-    const { data, error } = await supabase.from("site_settings").select("*");
+    // site_settings is newer than the generated DB types, so use the loosely typed client (anon access, RLS still applies).
+    const { data, error } = await looseDb.from("site_settings").select("*");
     if (error) throw error;
     return (data ?? []) as SiteSettingRow[];
   },
