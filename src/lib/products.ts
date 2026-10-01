@@ -1,8 +1,3 @@
-import fatCakes from "@/assets/food-fat-cakes.jpg";
-import russians from "@/assets/food-russians.jpg";
-import chips from "@/assets/food-chips.jpg";
-import fish from "@/assets/food-fish.jpg";
-import polony from "@/assets/food-polony.jpg";
 import kota from "@/assets/hero-kota.jpg";
 
 export type ProductRow = {
@@ -21,11 +16,6 @@ export type ProductRow = {
 };
 
 const categoryImages: Record<string, string> = {
-  "fat-cakes": fatCakes,
-  russians,
-  chips,
-  fish,
-  polony,
   kota,
 };
 
