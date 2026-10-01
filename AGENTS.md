@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep the admin portal as an icon-led operational workspace with a separate branded sign-in experience, because restaurant staff need fast, unambiguous navigation.

@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { ImageField } from "./ImageField";
 import { adminDb } from "@/lib/adminDb";
+import { Plus, Trash2 } from "lucide-react";
 
 type Promo = {
   id: string;
@@ -66,7 +67,7 @@ export function PromotionsTab() {
           Only active promotions inside their date range show on the website.
         </p>
         <Button variant="gold" size="sm" className="rounded-full" onClick={() => void add()}>
-          + Add promotion
+          <Plus /> Add promotion
         </Button>
       </div>
       {isLoading && <p className="text-muted-foreground">Loading…</p>}
@@ -144,13 +145,15 @@ function PromoEditor({ promo, onChanged }: { promo: Promo; onChanged: () => Prom
           <Switch checked={draft.active} onCheckedChange={(v) => void toggleActive(v)} />
           Active
         </label>
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="sm"
           onClick={() => void remove()}
-          className="ml-auto cursor-pointer text-xs text-muted-foreground hover:text-destructive"
+          className="ml-auto text-muted-foreground hover:text-destructive"
         >
-          Delete
-        </button>
+          <Trash2 /> Delete
+        </Button>
       </div>
       <div className="grid gap-3 md:grid-cols-2">
         <Field label="Title (English)">
