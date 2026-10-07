@@ -85,13 +85,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "T&M Lunch — Good Food • Great Mood" },
+      { title: "T&M Lunch" },
       {
         name: "description",
         content:
           "T&M Lunch is a Lesotho takeaway and eat-in spot serving fat cakes, russians, chips, fish, polony and loaded kotas.",
       },
-      { property: "og:title", content: "T&M Lunch — Good Food • Great Mood" },
+      { property: "og:title", content: "T&M Lunch" },
       {
         property: "og:description",
         content: "Fresh fast food in Lesotho. Order takeaway or eat in with us.",
