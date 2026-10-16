@@ -9,6 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { adminDb } from "@/lib/adminDb";
+import { useConfirm } from "@/components/ConfirmProvider";
 import { RefreshCw, Trash2, Calendar, Users, Package, Mail, Phone, ChevronDown, User } from "lucide-react";
 
 type Enquiry = {
@@ -38,6 +39,7 @@ const formatDate = (value: string | null) =>
 
 export function CateringTab() {
   const queryClient = useQueryClient();
+  const confirm = useConfirm();
   const [filter, setFilter] = useState<typeof STATUSES[number] | "all">("all");
 
   const { data, isLoading, error, refetch, isFetching } = useQuery({
@@ -65,7 +67,13 @@ export function CateringTab() {
 
   const remove = async (e: React.MouseEvent, enquiry: Enquiry) => {
     e.stopPropagation();
-    if (!window.confirm(`Delete the catering request from "${enquiry.name}"?`)) return;
+    const ok = await confirm({
+      title: "Delete this request?",
+      description: `The catering request from "${enquiry.name}" will be permanently removed. This cannot be undone.`,
+      confirmLabel: "Delete request",
+      destructive: true,
+    });
+    if (!ok) return;
     const { error: dbError } = await adminDb.from("catering_enquiries").delete().eq("id", enquiry.id);
     if (dbError) toast.error(dbError.message);
     else await queryClient.invalidateQueries({ queryKey: ["admin-catering"] });

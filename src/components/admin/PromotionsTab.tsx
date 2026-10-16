@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { DatePicker } from "@/components/ui/date-picker";
 import { ImageField } from "./ImageField";
 import { adminDb } from "@/lib/adminDb";
+import { useConfirm } from "@/components/ConfirmProvider";
 import { Plus, Trash2 } from "lucide-react";
 
 type Promo = {
@@ -81,6 +82,7 @@ export function PromotionsTab() {
 }
 
 function PromoEditor({ promo, onChanged }: { promo: Promo; onChanged: () => Promise<void> }) {
+  const confirm = useConfirm();
   const [draft, setDraft] = useState(promo);
   const [start, setStart] = useState(toDateInput(promo.starts_at));
   const [end, setEnd] = useState(toDateInput(promo.ends_at));
@@ -133,7 +135,13 @@ function PromoEditor({ promo, onChanged }: { promo: Promo; onChanged: () => Prom
   };
 
   const remove = async () => {
-    if (!window.confirm(`Delete "${promo.title_en}"?`)) return;
+    const ok = await confirm({
+      title: "Delete this promotion?",
+      description: `"${promo.title_en}" will be permanently removed from the website.`,
+      confirmLabel: "Delete promotion",
+      destructive: true,
+    });
+    if (!ok) return;
     const { error: dbError } = await adminDb.from("promotions").delete().eq("id", promo.id);
     if (dbError) toast.error(dbError.message);
     else await onChanged();

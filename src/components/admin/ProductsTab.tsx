@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { ImageField } from "./ImageField";
 import { adminDb } from "@/lib/adminDb";
+import { useConfirm } from "@/components/ConfirmProvider";
 import { CATEGORIES } from "@/lib/products";
 import { Plus, Trash2 } from "lucide-react";
 
@@ -91,6 +92,7 @@ function ProductEditor({
   const [draft, setDraft] = useState(product);
   const [price, setPrice] = useState(String(product.price));
   const [saving, setSaving] = useState(false);
+  const confirm = useConfirm();
 
   useEffect(() => {
     setDraft(product);
@@ -146,7 +148,13 @@ function ProductEditor({
   };
 
   const remove = async () => {
-    if (!window.confirm(`Delete "${product.name_en}"? Past orders keep their item names.`)) return;
+    const ok = await confirm({
+      title: "Delete this menu item?",
+      description: `"${product.name_en}" will be removed from the menu. Past orders keep their item names.`,
+      confirmLabel: "Delete item",
+      destructive: true,
+    });
+    if (!ok) return;
     const { error: dbError } = await adminDb.from("products").delete().eq("id", product.id);
     if (dbError) toast.error(dbError.message);
     else await onChanged();

@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { siteSettingsQuery, getSettingValue } from "@/lib/queries";
 import { toVideoSource } from "@/lib/video";
 import { isPlaceholder } from "@/config/siteConfig";
+import { useConfirm } from "@/components/ConfirmProvider";
 import { DeliverySettings } from "@/components/admin/DeliverySettings";
 import { PaymentSettings } from "@/components/admin/PaymentSettings";
 
@@ -15,6 +16,7 @@ const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100 MB
 
 export function SettingsTab() {
   const queryClient = useQueryClient();
+  const confirm = useConfirm();
   const { data, isLoading, error } = useQuery(siteSettingsQuery);
 
   const [videoUrl, setVideoUrl] = useState("");
@@ -70,7 +72,13 @@ export function SettingsTab() {
   };
 
   const clear = async () => {
-    if (!window.confirm("Remove the promotional video? It will show 'Coming soon' on the website.")) return;
+    const ok = await confirm({
+      title: "Remove the promotional video?",
+      description: "The website will show a 'Coming soon' placeholder in its place.",
+      confirmLabel: "Remove video",
+      destructive: true,
+    });
+    if (!ok) return;
     setSaving(true);
     const { error: dbError } = await adminDb
       .from("site_settings")

@@ -19,6 +19,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { FloatingFeedbackButton } from "@/components/FloatingFeedbackButton";
+import { ConfirmProvider } from "@/components/ConfirmProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -143,23 +144,25 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <I18nProvider>
-          <CartProvider>
-            <div className="flex min-h-screen flex-col">
-              {!isAdmin && <Header />}
-              <main className="flex-1">
-                {/* Required: nested routes render here. */}
-                <Outlet />
-              </main>
-              {!isAdmin && <Footer />}
-            </div>
-            {!isAdmin && (
-              <>
-                <WhatsAppButton />
-                <FloatingFeedbackButton />
-              </>
-            )}
-            <Toaster />
-          </CartProvider>
+          <ConfirmProvider>
+            <CartProvider>
+              <div className="flex min-h-screen flex-col">
+                {!isAdmin && <Header />}
+                <main className="flex-1">
+                  {/* Required: nested routes render here. */}
+                  <Outlet />
+                </main>
+                {!isAdmin && <Footer />}
+              </div>
+              {!isAdmin && (
+                <>
+                  <WhatsAppButton />
+                  <FloatingFeedbackButton />
+                </>
+              )}
+              <Toaster />
+            </CartProvider>
+          </ConfirmProvider>
         </I18nProvider>
       </ThemeProvider>
     </QueryClientProvider>
