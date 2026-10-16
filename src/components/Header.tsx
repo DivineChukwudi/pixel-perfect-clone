@@ -12,6 +12,7 @@ const navItems = [
   { to: "/", key: "nav.home" },
   { to: "/menu", key: "nav.menu" },
   { to: "/promotions", key: "nav.promotions" },
+  { to: "/catering", key: "nav.catering" },
   { to: "/about", key: "nav.about" },
 ] as const;
 
@@ -44,7 +45,7 @@ export function Header() {
                 activeOptions={{ exact: item.to === "/" }}
                 activeProps={{ className: "text-primary" }}
                 inactiveProps={{ className: "text-muted-foreground" }}
-                className="rounded-full px-3 py-2 text-sm font-medium transition-colors hover:text-primary"
+                className="rounded-full px-3 py-2 text-sm font-normal transition-colors hover:text-primary"
               >
                 {t(item.key)}
               </Link>

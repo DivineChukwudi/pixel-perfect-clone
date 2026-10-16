@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   ArrowLeft,
+  ChefHat,
   Eye,
   EyeOff,
   LogOut,
@@ -20,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { OrdersTab } from "@/components/admin/OrdersTab";
 import { ProductsTab } from "@/components/admin/ProductsTab";
 import { PromotionsTab } from "@/components/admin/PromotionsTab";
+import { CateringTab } from "@/components/admin/CateringTab";
 import { FeedbackTab } from "@/components/admin/FeedbackTab";
 import { SettingsTab } from "@/components/admin/SettingsTab";
 import { supabase } from "@/integrations/supabase/client";
@@ -126,6 +128,7 @@ function AdminPage() {
             <AdminTab value="orders" icon={ShoppingBag} label="Orders" />
             <AdminTab value="products" icon={UtensilsCrossed} label="Menu & prices" />
             <AdminTab value="promotions" icon={Tags} label="Promotions" />
+            <AdminTab value="catering" icon={ChefHat} label="Catering" />
             <AdminTab value="feedback" icon={MessageSquareText} label="Feedback" />
             <AdminTab value="settings" icon={Settings} label="Settings" />
           </TabsList>
@@ -133,6 +136,7 @@ function AdminPage() {
             <TabsContent value="orders" className="mt-0"><OrdersTab /></TabsContent>
             <TabsContent value="products" className="mt-0"><ProductsTab /></TabsContent>
             <TabsContent value="promotions" className="mt-0"><PromotionsTab /></TabsContent>
+            <TabsContent value="catering" className="mt-0"><CateringTab /></TabsContent>
             <TabsContent value="feedback" className="mt-0"><FeedbackTab /></TabsContent>
             <TabsContent value="settings" className="mt-0"><SettingsTab /></TabsContent>
           </div>
@@ -231,6 +235,7 @@ function Login() {
             <PortalFeature icon={PackageCheck} title="Orders" detail="Review and confirm incoming orders" />
             <PortalFeature icon={UtensilsCrossed} title="Menu & prices" detail="Update items, prices and availability" />
             <PortalFeature icon={Sparkles} title="Promotions" detail="Control offers customers can see" />
+            <PortalFeature icon={ChefHat} title="Catering" detail="Follow up on event and catering requests" />
             <PortalFeature icon={Settings} title="Shop settings" detail="Manage delivery and payment details" />
           </aside>
         </div>

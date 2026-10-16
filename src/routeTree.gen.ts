@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BuyListRouteImport } from './routes/buy-list'
+import { Route as CateringRouteImport } from './routes/catering'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as MenuRouteImport } from './routes/menu'
@@ -36,6 +37,11 @@ const AdminRoute = AdminRouteImport.update({
 const BuyListRoute = BuyListRouteImport.update({
   id: '/buy-list',
   path: '/buy-list',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CateringRoute = CateringRouteImport.update({
+  id: '/catering',
+  path: '/catering',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/buy-list': typeof BuyListRoute
+  '/catering': typeof CateringRoute
   '/checkout': typeof CheckoutRoute
   '/feedback': typeof FeedbackRoute
   '/menu': typeof MenuRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/buy-list': typeof BuyListRoute
+  '/catering': typeof CateringRoute
   '/checkout': typeof CheckoutRoute
   '/feedback': typeof FeedbackRoute
   '/menu': typeof MenuRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/buy-list': typeof BuyListRoute
+  '/catering': typeof CateringRoute
   '/checkout': typeof CheckoutRoute
   '/feedback': typeof FeedbackRoute
   '/menu': typeof MenuRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/buy-list'
+    | '/catering'
     | '/checkout'
     | '/feedback'
     | '/menu'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/buy-list'
+    | '/catering'
     | '/checkout'
     | '/feedback'
     | '/menu'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/buy-list'
+    | '/catering'
     | '/checkout'
     | '/feedback'
     | '/menu'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRoute
   BuyListRoute: typeof BuyListRoute
+  CateringRoute: typeof CateringRoute
   CheckoutRoute: typeof CheckoutRoute
   FeedbackRoute: typeof FeedbackRoute
   MenuRoute: typeof MenuRoute
@@ -162,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: '/buy-list'
       fullPath: '/buy-list'
       preLoaderRoute: typeof BuyListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catering': {
+      id: '/catering'
+      path: '/catering'
+      fullPath: '/catering'
+      preLoaderRoute: typeof CateringRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AdminRoute: AdminRoute,
   BuyListRoute: BuyListRoute,
+  CateringRoute: CateringRoute,
   CheckoutRoute: CheckoutRoute,
   FeedbackRoute: FeedbackRoute,
   MenuRoute: MenuRoute,

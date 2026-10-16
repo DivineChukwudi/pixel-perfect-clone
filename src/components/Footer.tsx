@@ -45,6 +45,11 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link to="/catering" className="hover:text-primary">
+                {t("nav.catering")}
+              </Link>
+            </li>
+            <li>
               <Link to="/feedback" className="hover:text-primary">
                 {t("nav.feedback")}
               </Link>

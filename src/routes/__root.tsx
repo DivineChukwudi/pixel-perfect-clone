@@ -18,6 +18,7 @@ import { ThemeProvider } from "@/hooks/use-theme";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { FloatingFeedbackButton } from "@/components/FloatingFeedbackButton";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -42,7 +43,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -151,7 +152,12 @@ function RootComponent() {
               </main>
               {!isAdmin && <Footer />}
             </div>
-            {!isAdmin && <WhatsAppButton />}
+            {!isAdmin && (
+              <>
+                <WhatsAppButton />
+                <FloatingFeedbackButton />
+              </>
+            )}
             <Toaster />
           </CartProvider>
         </I18nProvider>

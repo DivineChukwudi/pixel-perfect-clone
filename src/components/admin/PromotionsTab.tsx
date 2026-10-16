@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { DatePicker } from "@/components/ui/date-picker";
 import { ImageField } from "./ImageField";
 import { adminDb } from "@/lib/adminDb";
 import { Plus, Trash2 } from "lucide-react";
@@ -169,10 +170,10 @@ function PromoEditor({ promo, onChanged }: { promo: Promo; onChanged: () => Prom
           <Textarea rows={3} value={draft.description_so} onChange={(e) => setDraft({ ...draft, description_so: e.target.value })} />
         </Field>
         <Field label="Starts (optional)">
-          <Input type="date" value={start} onChange={(e) => setStart(e.target.value)} />
+          <DatePicker value={start} onChange={setStart} placeholder="No start date" minDate={null} />
         </Field>
         <Field label="Ends (optional)">
-          <Input type="date" value={end} onChange={(e) => setEnd(e.target.value)} />
+          <DatePicker value={end} onChange={setEnd} placeholder="No end date" minDate={null} />
         </Field>
       </div>
       <ImageField value={draft.image_url} folder="promotions" onChange={(url) => setDraft({ ...draft, image_url: url })} />
